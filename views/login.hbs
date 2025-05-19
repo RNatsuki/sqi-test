@@ -1,0 +1,27 @@
+<div class="login-container">
+    <h2>Login</h2>
+    {{#if error}}
+    <div class="error-message">
+        {{error}}
+    </div>
+    {{/if}}
+    <form action="/login" method="POST">
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>        <button type="submit" class="btn-login">Login</button>
+    </form>
+
+    <div class="additional-links">
+        <a href="/reset-password" class="reset-link">Forgot Password?</a>
+    </div>
+
+    <div class="note">
+        <h3>SQLi Hint:</h3>
+        <p>Try entering: <code>' OR '1'='1</code> in the username field and anything in the password field.</p>
+    </div>
+</div>

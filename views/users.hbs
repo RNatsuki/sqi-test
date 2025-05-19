@@ -1,0 +1,58 @@
+<div class="users-container">
+    <h2>User Search</h2>
+
+    {{#if error}}
+    <div class="error-message">
+        {{error}}
+    </div>
+    {{/if}}
+
+    <div class="search-box">
+        <form action="/users" method="GET">
+            <div class="form-group">
+                <label for="search">Search Users:</label>
+                <input type="text" id="search" name="search" value="{{searchTerm}}" placeholder="Enter username...">
+                <button type="submit" class="btn-search">Search</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="users-list">
+        <h3>Results:</h3>
+        {{#if users.length}}
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each users}}
+                    <tr>
+                        <td>{{this.id}}</td>
+                        <td>{{this.username}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        {{else}}
+            <p>No users found matching your search criteria.</p>
+        {{/if}}
+    </div>
+
+    <div class="sqli-examples">
+        <h3>SQL Injection Examples:</h3>
+        <p>Try these SQLi payloads in the search box:</p>
+        <ul>
+            <li><code>' OR '1'='1</code> - Shows all users</li>
+            <li><code>' UNION SELECT 1, sqlite_version() --</code> - Retrieves SQLite version</li>
+            <li><code>' UNION SELECT sql, name FROM sqlite_master WHERE type='table' --</code> - Shows database structure</li>
+        </ul>
+    </div>
+
+    <div class="navigation">
+        <a href="/" class="btn-secondary">Back to Dashboard</a>
+        <a href="/logout" class="btn-logout">Logout</a>
+    </div>
+</div>

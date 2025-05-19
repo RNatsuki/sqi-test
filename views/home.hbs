@@ -1,0 +1,29 @@
+<div class="home-container">
+    <h2>Welcome{{#if username}}, {{username}}{{/if}}!</h2>
+    <p>You have successfully logged into the application.</p>    <div class="dashboard">
+        <h3>User Dashboard</h3>
+        <p>This is a demonstration of a SQL injection vulnerable application.</p>
+        <p>In a real application, sensitive user data would be displayed here.</p>        <div class="dashboard-actions">
+            <a href="/users" class="btn-primary">Search Users</a>
+            <a href="/export" class="btn-primary">Export Data</a>
+            <a href="/profile" class="btn-primary">View Profile</a>
+            <a href="/sqli-info" class="btn-info">SQLi Info</a>
+        </div>
+    </div>
+
+    <div class="vulnerability-info">
+        <h3>About This Vulnerability</h3>
+        <p>This application demonstrates a SQL injection vulnerability in the login form.</p>
+        <p>The vulnerability is caused by directly concatenating user input into SQL queries without proper validation or parameterization.</p>
+        <p>In a real application, this could allow attackers to:</p>
+        <ul>
+            <li>Bypass authentication</li>
+            <li>Extract sensitive data</li>
+            <li>Modify database content</li>
+            <li>Delete database content</li>
+            <li>Execute administrative operations</li>
+        </ul>
+    </div>
+
+    <a href="/logout" class="btn-logout">Logout</a>
+</div>
